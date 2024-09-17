@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
+    
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
@@ -27,7 +27,37 @@ jobs:
       with:
         java-version: '21'
         distribution: 'corretto'
-
+        
+    # application.properties 파일 생성
+    - name: Make application.properties
+      run: |
+        cd ./src/main/resources
+        touch ./application.properties
+        echo "spring.application.name=truffle" >> ./application.properties
+        echo "server.port=8080" >> ./application.properties
+        echo "spring.profiles.include=db" >> ./application.properties
+        echo "spring.jpa.hibernate.ddl-auto=update" >> ./application.properties
+        echo "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect" >> ./application.properties
+        echo "spring.jpa.show-sql=true" >> ./application.properties
+        echo "spring.jpa.properties.hibernate.format_sql=true" >> ./application.properties
+        echo "spring.mvc.problemdetails.enabled=true" >> ./application.properties
+    
+    # application-db.properties 파일 생성
+    - name: Make application-db.properties
+      run: |
+        cd ./src/main/resources
+        touch ./application-db.properties
+        echo "${{ secrets.DATABASE_PROPERTIES }}" >> ./application-db.properties
+      shell: bash
+  
+    # MySQL 설정
+    - name: Setup MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql database: 'truffle'
+        mysql user: 'truffle_user'
+        mysql password: ${{ secrets.MYSQL_PASSWORD }}
+          
     # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
@@ -38,6 +68,12 @@ jobs:
       
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+
+    - name: 어플리케이션 실행 테스트(테스트 코드 제외하고 실행)
+      run: ./gradlew clean build --exclude-task test
+
+    - name: Test 실행(테스트 코드만 실행)
+      run: ./gradlew --info test
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
