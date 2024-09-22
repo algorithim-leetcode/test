@@ -1,9 +1,20 @@
 package com.toy.truffle.user;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.toy.truffle.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@DataJpaTest
+@ActiveProfiles("test")
 public class UserSignUpTest {
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Test
 	@DisplayName("회원정보 저장")
@@ -13,6 +24,7 @@ public class UserSignUpTest {
 		// when
 
 		// then
+		assertThat(userRepository).isNotNull();
 	}
 
 	@Test
