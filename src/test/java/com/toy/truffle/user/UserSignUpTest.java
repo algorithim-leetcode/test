@@ -2,6 +2,7 @@ package com.toy.truffle.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.toy.truffle.user.entity.User;
 import com.toy.truffle.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,30 +21,19 @@ public class UserSignUpTest {
 	@DisplayName("회원정보 저장")
 	public void testSaveUserSignUp() {
 		// given
+		final User saveUser = User.builder()
+			.userName("테스트유저")
+			.email("test@test.com")
+			.password("Asdf1234!@")
+			.build();
 
 		// when
+		final User result = userRepository.save(saveUser);
 
 		// then
 		assertThat(userRepository).isNotNull();
-	}
-
-	@Test
-	@DisplayName("비밀번호 암호화")
-	public void testEncodePassword() {
-		// given
-
-		// when
-
-		// then
-	}
-
-	@Test
-	@DisplayName("입력 값 정규식 체크")
-	public void testCheckValidation() {
-		// given
-
-		// when
-
-		// then
+		assertThat(result.getUserName()).isEqualTo("테스트유저");
+		assertThat(result.getEmail()).isEqualTo("test@test.com");
+		assertThat(result.getPassword()).isEqualTo("Asdf1234!@");
 	}
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -41,5 +42,12 @@ public class User {
 
 	// TODO : 계정 잠금 시간
 
+	@Builder
+	public User(Long id, String email, String userName, String password) {
+		this.id = id;
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+	}
 }
 
