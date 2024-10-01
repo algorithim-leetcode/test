@@ -46,6 +46,8 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     // TEST용 H2 추가
     runtimeOnly 'com.h2database:h2'
+    // 비밀번호 암호화 argon2 모듈 사용
+    implementation 'de.mkammerer:argon2-jvm:2.11'
 }
 
 tasks.named('test') {
