@@ -3,7 +3,7 @@ package com.toy.truffle.user.service;
 import com.toy.truffle.global.codeEnum.ResponseStatus;
 import com.toy.truffle.global.dto.CommonResponseDTO;
 import com.toy.truffle.global.util.Argon2PasswordEncryptor;
-import com.toy.truffle.user.dto.RegisterUserDTO;
+import com.toy.truffle.user.dto.SignUpDTO;
 import com.toy.truffle.user.entity.User;
 import com.toy.truffle.user.repository.UserRepository;
 import groovy.util.logging.Slf4j;
@@ -20,11 +20,11 @@ public class UserService {
 	private final Argon2PasswordEncryptor passwordEncryptor;
 
 	@Transactional
-	public CommonResponseDTO registerUser(RegisterUserDTO registerUserDTO) {
+	public CommonResponseDTO signUpUser(SignUpDTO signUpDTO) {
 		// 비밀번호 암호화 처리
-		String encryptedPassword = passwordEncryptor.encrypt(registerUserDTO.getPassword());
+		String encryptedPassword = passwordEncryptor.encrypt(signUpDTO.getPassword());
 
-		User user = registerUserDTO.toBuilder()
+		User user = signUpDTO.toBuilder()
 			.password(encryptedPassword) // 암호화된 비밀번호 설정
 			.build()
 			.toEntity();

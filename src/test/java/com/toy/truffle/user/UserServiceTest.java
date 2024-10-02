@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.toy.truffle.global.dto.CommonResponseDTO;
 import com.toy.truffle.global.util.Argon2PasswordEncryptor;
-import com.toy.truffle.user.dto.RegisterUserDTO;
+import com.toy.truffle.user.dto.SignUpDTO;
 import com.toy.truffle.user.entity.User;
 import com.toy.truffle.user.repository.UserRepository;
 import com.toy.truffle.user.service.UserService;
@@ -18,7 +18,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
@@ -53,7 +55,7 @@ public class UserServiceTest {
 		String encryptedPassword = "argon2EncryptedPassword";
 
 		// RegisterUserDTO 생성
-		RegisterUserDTO registerUserDTO = RegisterUserDTO.builder()
+		SignUpDTO signUpDTO = SignUpDTO.builder()
 			.email(email)
 			.userName(userName)
 			.password(rawPassword)
@@ -72,7 +74,7 @@ public class UserServiceTest {
 			.build());
 
 		// 회원가입 로직 호출
-		CommonResponseDTO commonResponseDTO = userService.registerUser(registerUserDTO);
+		CommonResponseDTO commonResponseDTO = userService.signUpUser(signUpDTO);
 
 		// then
 		// 데이터 저장 상태값 검증

@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Builder(toBuilder = true)
-public class RegisterUserDTO implements Serializable {
+public class SignUpDTO implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = -2459221140206834804L;
