@@ -5,7 +5,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 @Builder(toBuilder = true)
 public class SignUpDTO implements Serializable {
@@ -16,6 +18,16 @@ public class SignUpDTO implements Serializable {
 	private String email;
 	private String userName;
 	private String password;
+
+	public SignUpDTO(String email, String userName, String password) {
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+	}
+
+	public SignUpDTO() {
+
+	}
 
 	public User toEntity() {
 		return User.builder()

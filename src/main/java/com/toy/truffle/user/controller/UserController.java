@@ -6,6 +6,7 @@ import com.toy.truffle.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,8 @@ public class UserController {
 
 	// 회원 가입 페이지 호출
 	@GetMapping("/api/v1/signUp")
-	public String signUp() {
+	public String signUp(Model model) {
+		model.addAttribute("signUpDTO", new SignUpDTO());
 		return "common/signUp";
 	}
 
