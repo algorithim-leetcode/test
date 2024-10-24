@@ -22,7 +22,7 @@ public class TravelController {
     /**
      * 여행정보 저장
      */
-    @PostMapping("/save")
+    @PostMapping("/info")
     @ResponseBody
     public CommonResponseDTO saveTravel(@RequestBody TravelDto travelDto) {
         return travelService.saveTravel(travelDto);
