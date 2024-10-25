@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ResponseStatus {
-
+	// 유저영역
 	USER_REGISTER_SUCCESS(true, "회원가입 성공"),
 	USER_REGISTER_FAILURE(false, "회원가입 실패"),
 	TRAVEL_SAVE_SUCCESS(true, "정상적으로 저장되었습니다."),

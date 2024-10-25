@@ -35,7 +35,7 @@ public class User {
 	private String password;
 
 	// TODO : 가입일
-
+	
 	// TODO : 정보 수정일
 
 	// TODO : 비밀번호 실패 횟수
