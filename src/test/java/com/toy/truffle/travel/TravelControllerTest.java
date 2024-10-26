@@ -52,7 +52,7 @@ public class TravelControllerTest {
     @DisplayName("[Controller] 여행정보 저장")
     public void testSaveTravel() throws Exception {
         // given
-        String saveTravelUrl = "/travel/save";
+        String saveTravelUrl = "/travel/info";
 
         //테스트 DTO 생성
         TravelDto travelDto = TravelDto.builder()
