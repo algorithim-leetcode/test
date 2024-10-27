@@ -1,17 +1,19 @@
 package com.toy.truffle.travel;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import com.toy.truffle.travel.entity.TravelMain;
 import com.toy.truffle.travel.repository.TravelMainRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 @DataJpaTest
 @ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TravelMainRepositoryTest {
 
     @Autowired

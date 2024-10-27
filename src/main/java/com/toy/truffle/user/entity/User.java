@@ -23,7 +23,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long userSeq;
 
 	@Column(unique = true, length = 100, nullable = false)
 	private String email;
@@ -43,8 +43,8 @@ public class User {
 	// TODO : 계정 잠금 시간
 
 	@Builder
-	public User(Long id, String email, String userName, String password) {
-		this.id = id;
+	public User(Long userSeq, String email, String userName, String password) {
+		this.userSeq = userSeq;
 		this.email = email;
 		this.userName = userName;
 		this.password = password;
