@@ -69,7 +69,7 @@ public class UserServiceTest {
 
 		// UserRepository save 처리 모킹 (DB에 저장된 것처럼 설정)
 		when(userRepository.save(any(User.class))).thenReturn(User.builder()
-			.id(1L)
+			.userSeq(1L)
 			.email(email)
 			.userName(userName)
 			.password(encryptedPassword)

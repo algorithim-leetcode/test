@@ -29,7 +29,7 @@ public class UserService {
 			.build()
 			.toEntity();
 
-		Long savedUserId = userRepository.save(user).getId();
+		Long savedUserId = userRepository.save(user).getUserSeq();
 
 		ResponseStatus responseStatus = (savedUserId != null)
 			? ResponseStatus.USER_REGISTER_SUCCESS
