@@ -1,4 +1,4 @@
-package com.toy.truffle.global.handler;
+package com.toy.truffle.unit.global.handler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 
 import com.toy.truffle.global.config.problemDetails.CustomException;
 import com.toy.truffle.global.config.problemDetails.ErrorCode;
+import com.toy.truffle.global.handler.RestExceptionHandler;
+import com.toy.truffle.global.handler.WebExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
