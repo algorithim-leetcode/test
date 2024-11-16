@@ -87,7 +87,7 @@ jobs:
       run: ./gradlew build
 
     - name: Run tests
-      run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test --rerun-tasks
+      run: SPRING_PROFILES_ACTIVE="test" ./gradlew test --rerun-tasks --stacktrace --info --debug
 
     - name: run build
       run: ./gradlew clean build -x test
