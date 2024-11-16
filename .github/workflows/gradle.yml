@@ -29,29 +29,29 @@ jobs:
         distribution: 'corretto'
         
     # application.properties 파일 생성
-    - name: Make application.properties
-      run: |
-        cd ./src/main/resources
-        touch ./application.properties
-        echo "spring.application.name=truffle" >> ./application.properties
-        echo "server.port=8080" >> ./application.properties
-        echo "spring.profiles.include=db" >> ./application.properties
-        echo "spring.jpa.hibernate.ddl-auto=update" >> ./application.properties
-        echo "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect" >> ./application.properties
-        echo "spring.jpa.show-sql=true" >> ./application.properties
-        echo "spring.jpa.properties.hibernate.format_sql=true" >> ./application.properties
-        echo "spring.mvc.problemdetails.enabled=true" >> ./application.properties
+    #- name: Make application.properties
+    #  run: |
+    #    cd ./src/main/resources
+    #    touch ./application.properties
+    #    echo "spring.application.name=truffle" >> ./application.properties
+    #    echo "server.port=8080" >> ./application.properties
+    #    echo "spring.profiles.include=db" >> ./application.properties
+    #    echo "spring.jpa.hibernate.ddl-auto=update" >> ./application.properties
+    #   echo "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect" >> ./application.properties
+    #    echo "spring.jpa.show-sql=true" >> ./application.properties
+    #    echo "spring.jpa.properties.hibernate.format_sql=true" >> ./application.properties
+    #    echo "spring.mvc.problemdetails.enabled=true" >> ./application.properties
     
     # application-db.properties 파일 생성
-    - name: Make application-db.properties
-      run: |
-        cd ./src/main/resources
-        touch ./application-db.properties
-        echo "spring.datasource.url=jdbc:mysql://localhost:3306/truffle?useSSL=false&allowPublicKeyRetrieval=true" >> ./application-db.properties
-        echo "spring.datasource.username=truffle_user" >> ./application-db.properties
-        echo "spring.datasource.password=${{ secrets.MYSQL_PASSWORD }}" >> ./application-db.properties
-        echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application-db.properties
-      shell: bash
+    #- name: Make application-db.properties
+    #  run: |
+    #    cd ./src/main/resources
+    #    touch ./application-db.properties
+    #    echo "spring.datasource.url=jdbc:mysql://localhost:3306/truffle?useSSL=false&allowPublicKeyRetrieval=true" >> ./application-db.properties
+    #    echo "spring.datasource.username=truffle_user" >> ./application-db.properties
+    #    echo "spring.datasource.password=${{ secrets.MYSQL_PASSWORD }}" >> ./application-db.properties
+    #    echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> ./application-db.properties
+    #  shell: bash
 
       # application-test.properties 파일 생성 (H2 설정)
     - name: Create application-test.properties
@@ -60,20 +60,20 @@ jobs:
         touch ./src/test/resources/application-test.properties
         echo "spring.datasource.driver-class-name=org.h2.Driver" >> ./src/test/resources/application-test.properties
         echo "spring.datasource.url=jdbc:h2:mem:db;DB_CLOSE_DELAY=-1" >> ./src/test/resources/application-test.properties
-        echo "spring.datasource.username=truffle_test" >> ./src/test/resources/application-test.properties
-        echo "spring.datasource.password=${{ secrets.MYSQL_PASSWORD }}" >> ./src/test/resources/application-test.properties
+        echo "spring.datasource.username=test_user" >> ./src/test/resources/application-test.properties
+        echo "spring.datasource.password=test_password" >> ./src/test/resources/application-test.properties
         echo "spring.jpa.generate-ddl=true" >> ./src/test/resources/application-test.properties
         echo "spring.jpa.hibernate.ddl-auto=create-drop" >> ./src/test/resources/application-test.properties
         echo "spring.jpa.open-in-view=false" >> ./src/test/resources/application-test.properties
         echo "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect" >> ./src/test/resources/application-test.properties
 
       # MySQL 설정
-    - name: Setup MySQL
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql database: 'truffle'
-        mysql user: 'truffle_user'
-        mysql password: ${{ secrets.MYSQL_PASSWORD }}
+    #- name: Setup MySQL
+    #  uses: mirromutth/mysql-action@v1.1
+    #  with:
+    #    mysql database: 'truffle'
+    #    mysql user: 'truffle_user'
+    #    mysql password: ${{ secrets.MYSQL_PASSWORD }}
           
     # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
