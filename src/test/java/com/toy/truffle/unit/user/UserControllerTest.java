@@ -1,16 +1,25 @@
-package com.toy.truffle.user;
+package com.toy.truffle.unit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.truffle.global.dto.CommonResponseDTO;
 import com.toy.truffle.user.controller.UserController;
+import com.toy.truffle.user.dto.LoginDTO;
 import com.toy.truffle.user.dto.SignUpDTO;
+import com.toy.truffle.user.entity.User;
 import com.toy.truffle.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +57,7 @@ public class UserControllerTest {
 	public void testSignUp() throws Exception {
 		// given
 		final String signUpUrl = "/api/v1/signUp";
-		final String redirectUrl  = "/api/v1/login";
+		final String redirectUrl = "/api/v1/login";
 		// 회원가입 DTO 생성
 		final SignUpDTO signUpDTO = createSignInDTO();
 
@@ -78,5 +87,51 @@ public class UserControllerTest {
 			.password("test_password")
 			.userName("홍길동")
 			.build();
+	}
+
+	@Test
+	@DisplayName("[CONTROLLER] 로그인 성공")
+	public void testLoginSuccess() throws Exception {
+		// given
+		LoginDTO loginDTO = new LoginDTO("test_user@test.com", "valid_password");
+
+		// Mock User 객체
+		User user = User.builder()
+			.userSeq(1L)
+			.email("test_user@test.com")
+			.userName("홍길동")
+			.password("valid_password")
+			.build();
+
+		// mock login 설정
+		when(userService.login(anyString(), anyString()))
+			.thenReturn(user);
+
+		// createSession 리턴 설정
+		CommonResponseDTO mockResponse = CommonResponseDTO.builder()
+			.status(true)
+			.message("로그인 성공")
+			.build();
+
+		// mock createSession 설정
+		when(userService.createSession(any(User.class), any(HttpServletRequest.class)))
+			.thenReturn(mockResponse);
+
+		String requestBody = new ObjectMapper().writeValueAsString(loginDTO);
+
+		// when
+		ResultActions result = mockMvc.perform(post("/api/v1/login")
+			.contentType("application/json; charset=UTF-8")
+			.content(requestBody));
+
+		// then
+		result
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.status").value(true))
+			.andExpect(jsonPath("$.message").value("로그인 성공"));
+
+		verify(userService, times(1)).login(loginDTO.email(), loginDTO.password());
+		verify(userService, times(1)).createSession(any(User.class), any(HttpServletRequest.class));
 	}
 }

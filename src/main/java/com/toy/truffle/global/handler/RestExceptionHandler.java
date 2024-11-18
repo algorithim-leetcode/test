@@ -3,11 +3,10 @@ package com.toy.truffle.global.handler;
 import com.toy.truffle.global.config.problemDetails.CustomException;
 import com.toy.truffle.global.config.problemDetails.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
+import java.net.URI;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.net.URI;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
