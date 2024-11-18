@@ -21,8 +21,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -79,6 +80,72 @@ public class ChecklistControllerTest {
                 .andExpect(status().isOk()) //200
                 .andExpect(jsonPath("$.message").value(ResponseStatus.TRAVEL_SAVE_SUCCESS.getMessage())) //message 값 비교
                 .andExpect(jsonPath("$.status").value(true)) //status 값 비교
+                .andReturn(); // MvcResult 객체로 리턴
+    }
+
+
+    @Test
+    @DisplayName("[Controller] 체크리스트 업데이트")
+    public void testUpdateChecklist() throws Exception {
+        // given
+        String updateChecklistUrl = "/checklist/updateChecklist";
+
+        // 테스트 DTO 생성
+        ChecklistDto checklistDto = ChecklistDto.builder()
+                .checklistSeq(1) // 업데이트할 체크리스트 ID
+                .travelSeq(1)
+                .parentChecklistSeq(null)
+                .checklistName("필수준비물 - 수정")
+                .description("대메뉴1 - 수정")
+                .build();
+
+        // when
+        // checklistService updateChecklist 함수 호출 예상 동작 설정: stub
+        when(checklistService.updateChecklist(any(ChecklistDto.class)))
+                .thenReturn(CommonResponseDTO.builder()
+                        .status(true)
+                        .message(ResponseStatus.SAVE_SUCCESS.getMessage())
+                        .build());
+
+        // HTTP 요청
+        ResultActions resultActions = mockMvc.perform(put(updateChecklistUrl)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(checklistDto)));
+
+        // then
+        // 응답값 확인
+        MvcResult mvcResult = resultActions
+                .andExpect(status().isOk()) // 200
+                .andExpect(jsonPath("$.message").value(ResponseStatus.SAVE_SUCCESS.getMessage())) // message 값 비교
+                .andExpect(jsonPath("$.status").value(true)) // status 값 비교
+                .andReturn(); // MvcResult 객체로 리턴
+    }
+
+    @Test
+    @DisplayName("[Controller] 체크리스트 삭제")
+    public void testDeleteChecklist() throws Exception {
+        // given
+        Long checklistId = 1L;
+        String deleteChecklistUrl = "/checklist/deleteChecklist/" + checklistId;
+
+        // when
+        // checklistService deleteChecklist 함수 호출 예상 동작 설정: stub
+        when(checklistService.deleteChecklist(eq(checklistId)))
+                .thenReturn(CommonResponseDTO.builder()
+                        .status(true)
+                        .message(ResponseStatus.SAVE_SUCCESS.getMessage())
+                        .build());
+
+        // HTTP 요청
+        ResultActions resultActions = mockMvc.perform(delete(deleteChecklistUrl)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        // 응답값 확인
+        MvcResult mvcResult = resultActions
+                .andExpect(status().isOk()) // 200
+                .andExpect(jsonPath("$.message").value(ResponseStatus.SAVE_SUCCESS.getMessage())) // message 값 비교
+                .andExpect(jsonPath("$.status").value(true)) // status 값 비교
                 .andReturn(); // MvcResult 객체로 리턴
     }
 }

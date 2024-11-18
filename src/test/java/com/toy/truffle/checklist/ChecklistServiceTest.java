@@ -14,9 +14,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
@@ -57,6 +60,60 @@ public class ChecklistServiceTest {
         // 데이터 저장 상태값 검증
         assertTrue(commonResponseDTO.isStatus());
         // 메시지 내용 검증
+        assertEquals(ResponseStatus.SAVE_SUCCESS.getMessage(), commonResponseDTO.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("체크리스트 업데이트")
+    public void testUpdateChecklist() {
+        // given
+        ChecklistDto checklistDto = ChecklistDto.builder()
+                .checklistSeq(1)
+                .travelSeq(1)
+                .parentChecklistSeq(null)
+                .checklistName("업데이트된 준비물")
+                .description("업데이트된 대메뉴1")
+                .build();
+
+        Checklist existingChecklist = Checklist.builder()
+                .checklistSeq(1)
+                .travelSeq(1)
+                .parentChecklistSeq(null)
+                .checklistName("필수준비물")
+                .description("대메뉴1")
+                .build();
+
+        // when
+        when(checklistRepository.findById(eq(1L))).thenReturn(Optional.of(existingChecklist));
+        when(checklistRepository.save(any(Checklist.class))).thenReturn(Checklist.builder()
+                .checklistSeq(1)
+                .travelSeq(1)
+                .parentChecklistSeq(null)
+                .checklistName("업데이트된 준비물")
+                .description("업데이트된 대메뉴1")
+                .build());
+
+        CommonResponseDTO commonResponseDTO = checklistService.updateChecklist(checklistDto);
+
+        // then
+        assertTrue(commonResponseDTO.isStatus());
+        assertEquals(ResponseStatus.SAVE_SUCCESS.getMessage(), commonResponseDTO.getMessage());
+    }
+
+    @Test
+    @DisplayName("체크리스트 삭제")
+    public void testDeleteChecklist() {
+        // given
+        Long checklistId = 1L;
+
+        // when
+        when(checklistRepository.existsById(checklistId)).thenReturn(true);
+
+        CommonResponseDTO commonResponseDTO = checklistService.deleteChecklist(checklistId);
+
+        // then
+        assertTrue(commonResponseDTO.isStatus());
         assertEquals(ResponseStatus.SAVE_SUCCESS.getMessage(), commonResponseDTO.getMessage());
     }
 }

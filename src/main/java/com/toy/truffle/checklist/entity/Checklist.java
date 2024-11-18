@@ -38,7 +38,8 @@ public class Checklist {
     private String description; // 기본 설명
 
     @Builder
-    public Checklist(int travelSeq, Integer parentChecklistSeq, String checklistName, String description) {
+    public Checklist(Integer checklistSeq, int travelSeq, Integer parentChecklistSeq, String checklistName, String description) {
+        this.checklistSeq = checklistSeq;
         this.travelSeq = travelSeq;
         this.parentChecklistSeq = parentChecklistSeq;
         this.checklistName = checklistName;
