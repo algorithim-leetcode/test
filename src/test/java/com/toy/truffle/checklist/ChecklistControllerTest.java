@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ChecklistControllerTest {
     @InjectMocks
     private ChecklistController checklistController;
@@ -51,7 +53,7 @@ public class ChecklistControllerTest {
     @DisplayName("[Controller] 체크리스트 저장")
     public void testSaveChecklist() throws Exception {
         // given
-        String saveTravelUrl = "/checklist/info";
+        String saveTravelUrl = "/checklist/saveChecklist";
 
         //테스트 DTO 생성
         ChecklistDto checklistDto = ChecklistDto.builder()
@@ -78,7 +80,7 @@ public class ChecklistControllerTest {
         //응답값 확인
         MvcResult mvcResult = resultActions
                 .andExpect(status().isOk()) //200
-                .andExpect(jsonPath("$.message").value(ResponseStatus.TRAVEL_SAVE_SUCCESS.getMessage())) //message 값 비교
+                .andExpect(jsonPath("$.message").value(ResponseStatus.SAVE_SUCCESS.getMessage())) //message 값 비교
                 .andExpect(jsonPath("$.status").value(true)) //status 값 비교
                 .andReturn(); // MvcResult 객체로 리턴
     }
