@@ -27,6 +27,21 @@ public class ChecklistController {
 //        return "common/checklist";
 //    }
 
+//
+//    // 체크리스트 조회
+//    @GetMapping("/getChecklist/{id}")
+//    @ResponseBody
+//    public CommonResponseDTO getChecklist(@PathVariable int travelSeq) {
+//        return checklistService.getChecklistById(travelSeq);
+//    }
+//
+//    // 모든 체크리스트 조회
+//    @GetMapping("/getAllChecklists")
+//    @ResponseBody
+//    public CommonResponseDTO getAllChecklists() {
+//        return checklistService.getAllChecklists();
+//    }
+
     // 체크리스트 저장
     @PostMapping("/saveChecklist")
     @ResponseBody
@@ -44,7 +59,7 @@ public class ChecklistController {
     // 체크리스트 삭제
     @DeleteMapping("/deleteChecklist/{id}")
     @ResponseBody
-    public CommonResponseDTO deleteChecklist(@PathVariable Long id) {
+    public CommonResponseDTO deleteChecklist(@PathVariable int id) {
         return checklistService.deleteChecklist(id);
     }
 

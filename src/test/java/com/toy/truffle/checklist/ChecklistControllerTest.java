@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DataJpaTest
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -57,10 +59,9 @@ public class ChecklistControllerTest {
 
         //테스트 DTO 생성
         ChecklistDto checklistDto = ChecklistDto.builder()
-                .travelSeq(1)
-                .parentChecklistSeq(null)
-                .checklistName("필수준비물")
-                .description("대메뉴1")
+                .travelSeq(101)
+                .checklistName("화장품")
+                .description("테스트설명")
                 .build();
 
         // when
@@ -94,13 +95,11 @@ public class ChecklistControllerTest {
 
         // 테스트 DTO 생성
         ChecklistDto checklistDto = ChecklistDto.builder()
-                .checklistSeq(1) // 업데이트할 체크리스트 ID
-                .travelSeq(1)
-                .parentChecklistSeq(null)
-                .checklistName("필수준비물 - 수정")
-                .description("대메뉴1 - 수정")
+                .checklistSeq(5) // 업데이트할 체크리스트 ID
+                .travelSeq(100)
+                .checklistName("치약")
+                .description("죽염")
                 .build();
-
         // when
         // checklistService updateChecklist 함수 호출 예상 동작 설정: stub
         when(checklistService.updateChecklist(any(ChecklistDto.class)))
@@ -127,7 +126,7 @@ public class ChecklistControllerTest {
     @DisplayName("[Controller] 체크리스트 삭제")
     public void testDeleteChecklist() throws Exception {
         // given
-        Long checklistId = 1L;
+        int checklistId = 8;
         String deleteChecklistUrl = "/checklist/deleteChecklist/" + checklistId;
 
         // when

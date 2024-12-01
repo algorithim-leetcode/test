@@ -6,6 +6,7 @@ import com.toy.truffle.checklist.repository.ChecklistRepository;
 import com.toy.truffle.global.codeEnum.ResponseStatus;
 import com.toy.truffle.global.dto.CommonResponseDTO;
 import groovy.util.logging.Slf4j;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,15 @@ public class ChecklistService {
      */
     @Transactional
     public CommonResponseDTO saveChecklist(ChecklistDto checklistDto) {
-        Checklist checklist = checklistDto.toEntity();
+        Checklist parentChecklist = null;
 
+        // 부모 Checklist 조회
+        if (checklistDto.getParentChecklistSeq() != null) {
+            parentChecklist = checklistRepository.findById(checklistDto.getParentChecklistSeq())
+                    .orElseThrow(() -> new EntityNotFoundException("Parent Checklist not found with id: " + checklistDto.getParentChecklistSeq()));
+        }
+
+        Checklist checklist = checklistDto.toEntity(parentChecklist);
         Checklist result = checklistRepository.save(checklist);
 
         ResponseStatus responseStatus = (result != null)
@@ -47,8 +55,8 @@ public class ChecklistService {
                     .build();
         }
 
-        // 기존 체크리스트가 있는지 확인
-        Checklist checklist = checklistRepository.findById((long) checklistDto.getChecklistSeq())
+        // 기존 체크리스트 조회
+        Checklist checklist = checklistRepository.findById(checklistDto.getChecklistSeq())
                 .orElse(null);
 
         if (checklist == null) {
@@ -58,17 +66,20 @@ public class ChecklistService {
                     .build();
         }
 
-        // DTO 데이터를 엔티티에 직접 반영
-        // 기존 ID를 유지하면서 새로운 값을 가진 엔티티 생성
-        Checklist updatedChecklist = Checklist.builder()
-                .checklistSeq(checklistDto.getChecklistSeq()) // 기존 ID 유지
-                .travelSeq(checklistDto.getTravelSeq())
-                .parentChecklistSeq(checklistDto.getParentChecklistSeq())
-                .checklistName(checklistDto.getChecklistName())
-                .description(checklistDto.getDescription())
-                .build();
+        // 부모 체크리스트 설정
+        Checklist parentChecklist = null;
+        if (checklistDto.getParentChecklistSeq() != null) {
+            parentChecklist = checklistRepository.findById(checklistDto.getParentChecklistSeq())
+                    .orElseThrow(() -> new EntityNotFoundException("Parent Checklist not found with id: " + checklistDto.getParentChecklistSeq()));
+        }
 
-        checklistRepository.save(updatedChecklist);
+        // 변경 데이터 반영 (dirty checking 활용)
+        checklist.updateChecklist(
+                checklistDto.getTravelSeq(),
+                parentChecklist,
+                checklistDto.getChecklistName(),
+                checklistDto.getDescription()
+        );
 
         return CommonResponseDTO.builder()
                 .status(true)
@@ -80,7 +91,7 @@ public class ChecklistService {
      * 체크리스트 삭제
      */
     @Transactional
-    public CommonResponseDTO deleteChecklist(Long id) {
+    public CommonResponseDTO deleteChecklist(int id) {
         if (!checklistRepository.existsById(id)) {
             return CommonResponseDTO.builder()
                     .status(false)
@@ -94,6 +105,4 @@ public class ChecklistService {
                 .message("삭제 성공")
                 .build();
     }
-
-
 }
