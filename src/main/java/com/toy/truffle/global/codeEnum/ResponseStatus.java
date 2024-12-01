@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ResponseStatus {
+	// 공통 응답 메시지
+	SAVE_SUCCESS(true, "저장하였습니다."),     // 저장 성공 시 반환 메시지
+	SAVE_FAILURE(false, "저장에 실패하였습니다."), // 저장 실패 시 반환 메시지
+
 	// 유저영역
 	USER_REGISTER_SUCCESS(true, "회원가입 성공"),
 	USER_REGISTER_FAILURE(false, "회원가입 실패"),
