@@ -27,6 +27,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
+
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -57,8 +59,8 @@ public class TravelControllerTest {
         //테스트 DTO 생성
         TravelDto travelDto = TravelDto.builder()
                 .travelTitle("여행타이틀")
-                .startDate("2024-10-10")
-                .endDate("2024-10-15")
+                .startDate(LocalDate.of(2024, 10, 10))
+                .endDate(LocalDate.of(2024, 10, 15))
                 .createUserId("tester")
                 .build();
 

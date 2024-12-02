@@ -20,6 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
+
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -36,8 +38,8 @@ public class TravelServiceTest {
         // given
         long travelSeq = 99;
         String travelTitle = "여행타이틀";
-        String startDate = "2024-10-10";
-        String endDate = "2024-10-15";
+        LocalDate startDate = LocalDate.of(2024, 10, 10);
+        LocalDate endDate = LocalDate.of(2024, 10, 15);
         String createUserId = "tester";
 
         //테스트 DTO 생성

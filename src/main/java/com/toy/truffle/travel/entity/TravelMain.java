@@ -7,6 +7,11 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @DynamicInsert
@@ -21,31 +26,30 @@ public class TravelMain {
     @Column
     private String travelTitle;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private String startDate;
+    private LocalDate startDate;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private String endDate;
+    private LocalDate endDate;
 
     @Column(nullable = false)
     private String createUserId;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     @Column(updatable = false)
-    private String createDttm;
+    private LocalDateTime createDttm;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     @Column(insertable = false)
-    private String updateDttm;
+    private LocalDateTime updateDttm;
 
     //TODO :: updateDttm insert할때도 값이 들어가는 문제 해결 필요
 
+    @OneToMany(mappedBy = "travelMain", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TrvlDstnMapping> trvlDstnMapping = new ArrayList<>();
+
     @Builder
-    public TravelMain(long travelSeq, String travelTitle, String startDate, String endDate, String createUserId) {
+    public TravelMain(long travelSeq, String travelTitle, LocalDate startDate, LocalDate endDate, String createUserId) {
         this.travelSeq = travelSeq;
         this.travelTitle = travelTitle;
         this.startDate = startDate;

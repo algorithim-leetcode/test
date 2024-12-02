@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
+
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -26,8 +28,8 @@ public class TravelMainRepositoryTest {
         //테스트값 세팅
         TravelMain travel = TravelMain.builder()
                 .travelTitle("여행1")
-                .startDate("2024-10-13")
-                .endDate("2024-10-15")
+                .startDate(LocalDate.of(2024, 10, 13))
+                .endDate(LocalDate.of(2024, 10, 15))
                 .createUserId("user")
                 .build();
 
@@ -40,8 +42,8 @@ public class TravelMainRepositoryTest {
         // 데이터 저장값 검증
         assertThat(travelMainRepository).isNotNull();
         assertThat(result.getTravelTitle()).isEqualTo("여행1");
-        assertThat(result.getStartDate()).isEqualTo("2024-10-13");
-        assertThat(result.getEndDate()).isEqualTo("2024-10-15");
+        assertThat(result.getStartDate()).isEqualTo(LocalDate.of(2024, 10, 13));
+        assertThat(result.getEndDate()).isEqualTo(LocalDate.of(2024, 10, 15));
 
     }
 }
