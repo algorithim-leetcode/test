@@ -1,5 +1,6 @@
 package com.toy.truffle.travel.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
@@ -7,13 +8,15 @@ import java.io.Serializable;
 
 @Embeddable
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class TrvlDstnMappingId implements Serializable {
 
-    private long travelSeq;
+    @Column(name = "travel_seq")
+    private Long travelSeq;
+
+    @Column(name = "destination_cd")
     private String destinationCd;
 
 }

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Builder(toBuilder = true)
 public class TravelDto {
-    private long travelSeq;
+    private Long travelSeq;
     private String travelTitle;
     private LocalDate startDate;
     private LocalDate endDate;

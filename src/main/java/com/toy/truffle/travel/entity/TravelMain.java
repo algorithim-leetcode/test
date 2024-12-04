@@ -21,7 +21,7 @@ public class TravelMain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long travelSeq;
+    private Long travelSeq;
 
     @Column
     private String travelTitle;
@@ -45,8 +45,8 @@ public class TravelMain {
 
     //TODO :: updateDttm insert할때도 값이 들어가는 문제 해결 필요
 
-    @OneToMany(mappedBy = "travelMain", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TrvlDstnMapping> trvlDstnMapping = new ArrayList<>();
+    @OneToMany(mappedBy = "travelMain", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<TrvlDstnMapping> trvlDstnMapping = new ArrayList<>(); // trvlDstnMapping가 연관관계 주인
 
     @Builder
     public TravelMain(long travelSeq, String travelTitle, LocalDate startDate, LocalDate endDate, String createUserId) {
