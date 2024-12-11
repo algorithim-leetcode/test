@@ -14,9 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -36,6 +41,9 @@ public class TrvlDstnMappingRepositoryTest {
 
     @Autowired
     private EntityManager em;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     @DisplayName("여행지, 여행, 매핑테이블 저장")
@@ -187,5 +195,49 @@ public class TrvlDstnMappingRepositoryTest {
         // 데이터 저장값 검증
         assertThat(trvlDstnMappingRepository).isNotNull();
         assertThat(mp.size()).isEqualTo(0); // TrvlDstnMapping list가 비어있는지 확인
+    }
+
+    @Test
+    @Sql(scripts = "/sql/travelMain/travelMainTest.sql") // SQL 파일 실행
+    @DisplayName("SQL 파일로 초기 데이터 등록 후 조회 및 수정 테스트")
+    @Transactional
+    public void testInitData() {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM travel_main", Integer.class); //sql파일 데이터가 들어 갔는지 확인
+
+        //List<TrvlDstnMapping> TrvlDstnMapping = trvlDstnMappingRepository.findAll();
+        //TrvlDstnMapping 조회 먼저하면 Lazy설정 떄문에 TravelMain가 proxy 객체로 로드되어 내용이 전부 null로 불러와짐
+
+        //TravelMain 조회
+        TravelMain travelMain = travelMainRepository.findById(1L).orElseThrow();
+
+        //destination 조회
+        Destination destination = destinationRepository.findById("99999").orElseThrow();
+
+        TrvlDstnMappingId trvlDstnMappingId = new TrvlDstnMappingId(travelMain.getTravelSeq(), destination.getDestinationCd());
+
+        TrvlDstnMapping trvlDstnMapping = TrvlDstnMapping.builder()
+                .id(trvlDstnMappingId)
+                .travelMain(travelMain)
+                .destination(destination)
+                .build();
+
+        // trvlDstnMapping 조회
+        List<TrvlDstnMapping> trvlDstnMappingList = trvlDstnMappingRepository.findAll();
+
+        //리스트에 새로운 trvlDstnMapping 추가
+        trvlDstnMappingList.add(trvlDstnMapping);
+
+        //travelMain에 리스트 추가
+        travelMain.getTrvlDstnMapping().addAll(trvlDstnMappingList);
+
+        //TravelMain 엔티티 저장
+        travelMainRepository.save(travelMain);
+
+        //trvlDstnMapping 조회
+        List<TrvlDstnMapping> mp = trvlDstnMappingRepository.findAll();
+
+        // 데이터 저장값 검증
+        assertThat(trvlDstnMappingRepository).isNotNull();
+        assertThat(mp.size()).isEqualTo(2); // TrvlDstnMapping가 추가 되었는지 확인
     }
 }
