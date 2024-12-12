@@ -26,6 +26,9 @@ public class TrvlDstnMapping {
     @JoinColumn(name = "travel_seq", nullable = false)
     private TravelMain travelMain; // TrvlDstnMapping가 연관관계 주인
 
+    @Column
+    private Long destinationOrder;
+
     @Builder
     public TrvlDstnMapping(TrvlDstnMappingId id, Destination destination, TravelMain travelMain) {
         this.id = id;

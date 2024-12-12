@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Builder(toBuilder = true)
@@ -14,7 +15,19 @@ public class TravelDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private String createUserId;
+    private List<String> destinationCdList;
 
+    //신규 등록시
+    public TravelMain toNewEntity() {
+        return TravelMain.builder()
+                .travelTitle(travelTitle)
+                .startDate(startDate)
+                .endDate(endDate)
+                .createUserId(createUserId)
+                .build();
+    }
+
+    //기존 엔티티
     public TravelMain toEntity() {
         return TravelMain.builder()
                 .travelSeq(travelSeq)
