@@ -32,6 +32,8 @@ public class TravelService {
     @Transactional
     public CommonResponseDTO saveTravel(TravelDto travelDto) {
         // TODO : travelDto - createUserId 로그인 정보로 가져오도록 추가 필요
+        travelDto.setCreateUserId("test");
+
         TravelMain travelMain = travelDto.toNewEntity();
         travelMain = travelMainRepository.save(travelMain); //여행 저장 (seq 가져오기 위함)
 

@@ -57,4 +57,10 @@ public class DestinationServiceTest {
         // 메시지 내용 검증
         assertEquals(ResponseStatus.DESTINATION_SAVE_SUCCESS.getMessage(), commonResponseDTO.getMessage());
     }
+
+    @Test
+    @DisplayName("여행지역 조회")
+    public void testFindDestinations() {
+        //TODO :: 작성필요
+    }
 }
