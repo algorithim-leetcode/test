@@ -6,6 +6,8 @@ import com.toy.truffle.destination.repository.DestinationRepository;
 import com.toy.truffle.destination.service.DestinationService;
 import com.toy.truffle.global.codeEnum.ResponseStatus;
 import com.toy.truffle.global.dto.CommonResponseDTO;
+import com.toy.truffle.travel.entity.TrvlDstnMapping;
+import com.toy.truffle.travel.entity.TrvlDstnMappingId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,10 +16,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
@@ -61,6 +66,26 @@ public class DestinationServiceTest {
     @Test
     @DisplayName("여행지역 조회")
     public void testFindDestinations() {
-        //TODO :: 작성필요
+        // given
+        List<String> destinationCdList = List.of("10101", "10102", "15001");
+
+        List<Destination> destinationList = List.of(
+                new Destination("10101", "강동구"),
+                new Destination("10102", "은평구"),
+                new Destination("15001", "강릉시")
+        );
+
+        // when
+        // DestinationService save 호출 예상동작 설정: stub
+        when(destinationRepository.findByDestinationCdIn(any())).thenReturn(destinationList);
+
+        //서비스 로직 호출
+        List<DestinationDto> resultList  = destinationService.findDestinations(destinationCdList);
+
+        //then
+        //f리턴 타입 검증
+        assertTrue(resultList.get(0).getClass() == DestinationDto.class);
+        // 리턴된 리스트 사이즈 검증
+        assertThat(resultList.size()).isEqualTo(3);
     }
 }

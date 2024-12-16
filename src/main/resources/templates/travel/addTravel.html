@@ -40,6 +40,26 @@
                       }
                     });
 
+                    //검색 텍스트박스 입력시 이벤트
+                    document.getElementById('search-input').addEventListener('input', (event) => {
+                        let searchText = event.target.value; // input 박스의 값 가져오기
+                        let destinationList = Array.from(document.querySelectorAll('span[name="destination"]'));
+
+                        if(searchText == "") { //공백일 경우
+                            destinationList.forEach(function(item) {
+                                item.setAttribute('style', 'display:block'); //전체 보임
+                            });
+                        } else { //입력한 텍스트가 있을 경우
+                            destinationList.forEach(function(item) {
+                                item.setAttribute('style', 'display:none'); //전체 숨김
+                            });
+
+                            destinationList.filter(item => item.textContent.includes(searchText)).forEach(function(item) {
+                                item.setAttribute('style', 'display:block'); //포함 요소 보여줌
+                            });
+                        }
+                    });
+
                     getDestinationList(); //여행지역 조회 및 초기화
                 }
 
