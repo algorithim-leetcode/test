@@ -180,7 +180,7 @@ public class TrvlDstnMappingRepositoryTest {
         em.clear(); //영속성 컨텍스트 초기화
 
         //TravelMain 조회
-        TravelMain tm = travelMainRepository.findById(1L).orElseThrow();
+        TravelMain tm = travelMainRepository.findAll().get(0);
 
         //자식 리스트 초기화
         tm.getTrvlDstnMapping().clear();
