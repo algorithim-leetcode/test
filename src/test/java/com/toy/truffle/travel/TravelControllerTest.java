@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.toy.truffle.global.codeEnum.ResponseStatus;
 import com.toy.truffle.global.dto.CommonResponseDTO;
 import com.toy.truffle.travel.controller.TravelController;
@@ -47,6 +48,7 @@ public class TravelControllerTest {
     @BeforeEach
     public void setUp() {
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         mockMvc = MockMvcBuilders.standaloneSetup(travelController).build();
     }
 
