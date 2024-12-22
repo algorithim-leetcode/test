@@ -62,4 +62,23 @@ public class DestinationRepositoryTest {
         assertThat(result.size()).isEqualTo(3);
 
     }
+
+    @Test
+    @Sql(scripts = "/sql/destination/destinationTest.sql") // SQL 파일 실행
+    @DisplayName("여행지역 테이블 조회 (like)")
+    public void testFindByDestinationCdStartingWith() {
+        // given
+        //테스트값 세팅
+        String firstDestinationCd = "10";
+
+        // when
+        // 10으로 시작하는 데이터 조회
+        List<Destination> result = destinationRepository.findByDestinationCdStartingWith(firstDestinationCd);
+
+        // then
+        // 데이터 저장값 검증
+        assertThat(destinationRepository).isNotNull();
+        assertThat(result.size()).isEqualTo(4);
+
+    }
 }

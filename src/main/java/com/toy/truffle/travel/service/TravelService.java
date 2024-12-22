@@ -11,9 +11,9 @@ import com.toy.truffle.travel.entity.TrvlDstnMappingId;
 import com.toy.truffle.travel.repository.TravelMainRepository;
 import com.toy.truffle.travel.repository.TrvlDstnMappingRepository;
 import groovy.util.logging.Slf4j;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
