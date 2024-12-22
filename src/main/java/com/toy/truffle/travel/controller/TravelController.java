@@ -7,10 +7,7 @@ import com.toy.truffle.travel.service.TravelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Slf4j
@@ -18,6 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/travel")
 public class TravelController {
     private final TravelService travelService;
+
+    /**
+     * 여행정보 추가 화면
+     */
+    @GetMapping("/add")
+    public String addTravel() {
+        return "travel/addTravel";
+    }
 
     /**
      * 여행정보 저장

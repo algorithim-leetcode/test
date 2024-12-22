@@ -1,14 +1,16 @@
 package com.toy.truffle.destination.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.toy.truffle.travel.entity.TrvlDstnMapping;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +24,9 @@ public class Destination {
 
     @Column
     private String destinationName;
+
+    @OneToMany(mappedBy = "destination", fetch = FetchType.LAZY)
+    private List<TrvlDstnMapping> trvlDstnMapping = new ArrayList<>(); // trvlDstnMapping가 연관관계 주인
 
     @Builder
     public Destination(String destinationCd, String destinationName) {

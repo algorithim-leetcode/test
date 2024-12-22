@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.toy.truffle.global.codeEnum.ResponseStatus;
 import com.toy.truffle.global.dto.CommonResponseDTO;
 import com.toy.truffle.travel.controller.TravelController;
@@ -27,6 +28,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
+
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -45,6 +48,7 @@ public class TravelControllerTest {
     @BeforeEach
     public void setUp() {
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         mockMvc = MockMvcBuilders.standaloneSetup(travelController).build();
     }
 
@@ -57,8 +61,8 @@ public class TravelControllerTest {
         //테스트 DTO 생성
         TravelDto travelDto = TravelDto.builder()
                 .travelTitle("여행타이틀")
-                .startDate("2024-10-10")
-                .endDate("2024-10-15")
+                .startDate(LocalDate.of(2024, 10, 10))
+                .endDate(LocalDate.of(2024, 10, 15))
                 .createUserId("tester")
                 .build();
 
